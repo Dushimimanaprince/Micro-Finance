@@ -1,6 +1,6 @@
 from django.db import models
 from django.conf import settings
-
+import uuid
 
 class Request(models.Model):
     STATUS_CHOICES = [
@@ -8,6 +8,7 @@ class Request(models.Model):
         ("paid", "Paid"),
         ("declined", "Declined"),
     ]
+    id= models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     requester = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="requests_made")
     payer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="requests_to_pay")
     amount = models.DecimalField(max_digits=15, decimal_places=2)
@@ -21,6 +22,7 @@ class Request(models.Model):
 
 class Transaction(models.Model):
 
+    id= models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     sender = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="sent_transactions", null=True, blank=True)
     receiver = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="received_transactions")
     amount = models.DecimalField(max_digits=15, decimal_places=2)

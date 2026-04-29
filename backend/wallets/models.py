@@ -1,8 +1,9 @@
 from django.db import models
 from django.conf import settings
-
+import uuid
 
 class UserWallet(models.Model):
+    id= models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='wallet')
     balance = models.DecimalField(max_digits=15, decimal_places=2, default=0)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -18,6 +19,7 @@ class LoanWallet(models.Model):
         ("overdue", "Overdue"),
         ("closed", "Closed"),
     ]
+    id= models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='loan_wallet')
     loan_balance = models.DecimalField(max_digits=15, decimal_places=2, default=0)
     total_repaid = models.DecimalField(max_digits=15, decimal_places=2, default=0)
