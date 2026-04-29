@@ -1,3 +1,15 @@
 from django.contrib import admin
+from .models import UserWallet, LoanWallet
 
-# Register your models here.
+
+@admin.register(UserWallet)
+class UserWalletAdmin(admin.ModelAdmin):
+    list_display = ('user', 'balance', 'created_at')
+    search_fields = ('user__username',)
+
+
+@admin.register(LoanWallet)
+class LoanWalletAdmin(admin.ModelAdmin):
+    list_display = ('user', 'loan_balance', 'total_repaid', 'status')
+    list_filter = ('status',)
+    search_fields = ('user__username',)
