@@ -20,3 +20,5 @@ class RequestSerializer(serializers.ModelSerializer):
         model = Request
         fields = ('id', 'requester', 'requester_username', 'payer', 'payer_username', 'amount', 'purpose', 'status', 'request_at')
         read_only_fields = ('id', 'requester', 'status', 'request_at')
+        
+
