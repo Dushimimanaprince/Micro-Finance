@@ -26,7 +26,7 @@ class Transaction(models.Model):
     sender = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="sent_transactions", null=True, blank=True)
     receiver = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="received_transactions")
     amount = models.DecimalField(max_digits=15, decimal_places=2)
-    purpose = models.CharField(max_length=20,)
+    purpose = models.CharField(max_length=200,)
     transaction_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
