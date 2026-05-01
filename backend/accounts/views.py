@@ -96,3 +96,38 @@ class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
 
 
+class ResendOTPView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        email = request.data.get('email')
+
+        if not email:
+            return Response(
+                {"error": "Email is required"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        try:
+            user = User.objects.get(email=email)
+        except User.DoesNotExist:
+            return Response(
+                {"error": "User not found"},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        if user.is_active:
+            return Response(
+                {"error": "Account is already verified"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        OTPVerification.objects.filter(user=user).delete()
+        code = OTPVerification.generate_code()
+        OTPVerification.objects.create(user=user, code=code)
+        send_otp_email(user, code)
+
+        return Response(
+            {"message": "New OTP sent to your email"},
+            status=status.HTTP_200_OK
+        )
