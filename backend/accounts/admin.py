@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import User
+from .models import OTPVerification, User
 
 
 @admin.register(User)
@@ -13,3 +13,8 @@ class CustomUserAdmin(UserAdmin):
     add_fieldsets = UserAdmin.add_fieldsets + (
         ('Extra Info', {'fields': ('phone',)}),
     )
+
+
+@admin.register(OTPVerification)
+class OTPVerificationAdmin(admin.ModelAdmin):
+    list_display = ('user', 'code', 'created_at', 'is_used')
