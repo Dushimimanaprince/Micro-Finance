@@ -7,6 +7,7 @@ class UserWallet(models.Model):
     id= models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='wallet')
     balance = models.DecimalField(max_digits=15, decimal_places=2, default=0)
+    is_active= models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -25,6 +26,7 @@ class LoanWallet(models.Model):
     loan_balance = models.DecimalField(max_digits=15, decimal_places=2, default=0)
     total_repaid = models.DecimalField(max_digits=15, decimal_places=2, default=0)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="no_loan")
+    is_active= models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
