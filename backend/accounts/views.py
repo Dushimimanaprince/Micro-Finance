@@ -64,7 +64,8 @@ class VerifyOTPView(APIView):
             otp= OTPVerification.objects.get(user=user,code=code)
         except OTPVerification.DoesNotExist:
             return Response(
-                {"error":"The OTP Code is Invalid"}
+                {"error":"The OTP Code is Invalid"},
+                status=status.HTTP_400_BAD_REQUEST
             )
         
         if otp.is_used == True:
