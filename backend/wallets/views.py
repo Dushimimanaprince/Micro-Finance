@@ -31,10 +31,7 @@ class LoanWalletView(APIView):
             return Response(serializer.data)
         
         except LoanWallet.DoesNotExist:
-            return Response(
-                {"error":"The Loan Wallet not Found"},
-                status=status.HTTP_404_NOT_FOUND
-            )
+            return Response(None, status=status.HTTP_200_OK)
     
 class LoanRequestView(APIView):
     

@@ -2,6 +2,8 @@ from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.contrib.auth import get_user_model
+from rest_framework.permissions import IsAdminUser
+from django.dispatch import receiver
 from rest_framework import status
 from .models import Transaction, Request
 from wallets.models import UserWallet
@@ -204,3 +206,54 @@ class ApproveRequestView(APIView):
             {"message": "Payment approved successfully"},
             status=status.HTTP_200_OK
         )
+        
+class DepositView(APIView):
+    
+    permission_classes = [IsAdminUser]
+    
+    def post(self,request):
+        
+        receiver_username= request.data.get("username")
+        amount= Decimal(str(request.data.get("amount")))
+        
+        if not receiver_username or not amount:
+            return Response(
+                {"error":"Please provide username or amount"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+            
+        try:
+            receiver= User.objects.get(username=receiver_username)
+        except User.DoesNotExist:
+            return Response(
+                {"error":"The user Doesn't Exist Please provide Valid User"},
+                status=status.HTTP_404_NOT_FOUND
+            )
+            
+        if amount <= 0:
+            return Response(
+                {"error":"The amount Should be Above 0"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        receiver_wallet= UserWallet.objects.get(user=receiver)
+        
+        receiver_wallet.balance += amount
+        receiver_wallet.save()
+        
+        admin= User.objects.get(username="admin")
+        
+        Transaction.objects.create(
+            sender= admin,
+            receiver=receiver,
+            amount=amount,
+            purpose="Deposit"
+        )
+        
+        
+        return Response(
+            {"success":f"The amount ${amount} is Deposited successfully to {receiver_username}"},
+            status=status.HTTP_200_OK
+        )
+        
+        

@@ -5,7 +5,7 @@ from rest_framework.permissions import AllowAny
 from django.contrib.auth import get_user_model
 from rest_framework_simplejwt.views import TokenObtainPairView
 from .serializer import RegisterSerializer
-from .serializer import RegisterSerializer,CustomTokenObtainPairSerializer
+from .serializer import RegisterSerializer,CustomTokenObtainPairSerializer,UserSerializer
 from .models import OTPVerification
 from accounts.utils import send_otp_email
 
@@ -132,3 +132,48 @@ class ResendOTPView(APIView):
             {"message": "New OTP sent to your email"},
             status=status.HTTP_200_OK
         )
+        
+class MeView(APIView):
+    def get(self, request):
+        user = request.user
+        return Response({
+            "username": user.username,
+            "email": user.email,
+            "phone": user.phone,
+            "first_name": user.first_name,
+            "last_name": user.last_name,
+        })
+        
+class UsersView(APIView):
+    
+    permission_classes = [AllowAny]
+    
+    def get(self,request):
+        
+        users= User.objects.all()
+        serializer= UserSerializer(users,many=True)
+        
+        return Response(serializer.data)
+    
+    def put(self,request,id):
+        
+        active= request.data.get("active")
+        
+        try:
+            user= User.objects.get(id=id)
+            
+        except User.DoesNotExist:
+            return Response(
+                {"error":"The User not Found"},
+                status=status.HTTP_404_NOT_FOUND
+            )
+            
+        user.is_active= active
+        user.save()
+        
+        return Response(
+            {"success":"User is Activated/Deactived"},
+            status=status.HTTP_200_OK
+        )
+            
+    

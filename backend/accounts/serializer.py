@@ -11,6 +11,12 @@ class RegisterSerializer(serializers.ModelSerializer):
         model= User
         fields=("username","first_name","last_name","email","phone","password")
         
+    def validate_phone(self,value):
+        
+        if User.objects.filter(phone=value).exists():
+            raise serializers.ValidationError("Phone Already Exists")
+        return value
+        
     def create(self, validated_data):
         user = User.objects.create_user(**validated_data)
         return user
@@ -26,4 +32,10 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         token['is_superuser']=user.is_superuser
         
         return token
+    
+class UserSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model= User
+        fields= ("id","username","first_name","last_name","email","phone","is_superuser","last_login","is_active")
         

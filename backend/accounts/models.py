@@ -33,3 +33,4 @@ class OTPVerification(models.Model):
         return timezone.now() > self.created_at + timedelta(minutes=10)
     
 
+
