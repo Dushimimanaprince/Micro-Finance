@@ -24,10 +24,21 @@ const Signup = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
         try{
-        await API.post(`auth/register/`,formData)
-        navigate("/verify/code")
+            await API.post(`auth/register/`,formData)
+            navigate("/verify/code")
         }catch (err){
-            setError(err.response?.data?.error ?? "Failed to Register user")
+                    const data = err.response?.data
+        if (data?.phone) {
+            setError(data.phone[0])
+            } else if (data?.username) {
+                setError(data.username[0])
+            } else if (data?.email) {
+                setError(data.email[0])
+            } else if (data?.error) {
+                setError(data.error)
+            } else {
+                setError("Failed to Register user")
+            }
         } finally {
             setLoading(false)
         }

@@ -10,6 +10,7 @@ const Login = () => {
         username:"",password:""
     })
     const[error,setError]= useState("")
+    const [loading, setLoading] = useState(false)
     const navigate= useNavigate();
 
     const handleChange = (e)=> {
@@ -37,7 +38,9 @@ const Login = () => {
 
         }catch (err){
             setError(err.response?.data?.error ?? "Failed to Login")
-        } 
+        } finally{
+            setLoading(false)
+        }
 
     }
 
