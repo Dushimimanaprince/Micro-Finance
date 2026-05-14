@@ -37,7 +37,13 @@ const Login = () => {
             }
 
         }catch (err){
-            setError(err.response?.data?.error ?? "Failed to Login")
+            const detail = err.response?.data?.detail
+            if (detail === "No active account found with the given credentials") {
+                setError("Your account is inactive. Please contact the administrator.")
+            } else {
+                setError(detail ?? "Failed to Login")
+            }
+
         } finally{
             setLoading(false)
         }

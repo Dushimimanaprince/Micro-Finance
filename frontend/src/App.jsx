@@ -4,6 +4,7 @@ import OTP from "./pages/auth/Otp";
 import Login from "./pages/auth/Login";
 import Dashboard from "./pages/user/Dashboard";
 import AdminDashboard from "./pages/admin/AdminDashboard";
+import Users from "./pages/admin/Users";
 
 
 function App(){
@@ -17,6 +18,7 @@ function App(){
                 <Route path="/login" element={<Login />} />
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/admin/dashboard" element={<AdminDashboard />} />
+                <Route path="/admin/users" element={<Users />} />
             </Routes>
 
         </BrowserRouter>

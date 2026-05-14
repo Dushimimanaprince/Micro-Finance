@@ -171,7 +171,7 @@ const AdminDashboard = () => {
 
              <div className="max-w-7xl mx-auto flex gap-4">
 
-                <button onClick={() => navigate("admin/deposit")}
+                <button onClick={() => navigate("/admin/users")}
                     className="flex items-center gap-2 bg-green-900 hover:bg-green-950 text-white text-sm font-medium px-5 py-3 rounded-xl border border-green-700 hover:border-green-600 transition-all shadow-lg shadow-blue-900/30">
                     🗽 View User Details
                 </button>
