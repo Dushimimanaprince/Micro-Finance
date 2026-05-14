@@ -1,8 +1,9 @@
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAdminUser
 from django.contrib.auth import get_user_model
+from django.template.context_processors import request
 from rest_framework_simplejwt.views import TokenObtainPairView
 from .serializer import RegisterSerializer
 from .serializer import RegisterSerializer,CustomTokenObtainPairSerializer,UserSerializer
@@ -146,8 +147,7 @@ class MeView(APIView):
         
 class UsersView(APIView):
     
-    permission_classes = [AllowAny]
-    
+    permission_classes =[IsAdminUser]
     def get(self,request):
         
         users= User.objects.all()
@@ -157,7 +157,11 @@ class UsersView(APIView):
     
     def put(self,request,id):
         
-        active= request.data.get("active")
+        username= request.data.get("username")
+        phone= request.data.get("phone")
+        email= request.data.get("email")
+        first_name= request.data.get("first_name")
+        last_name= request.data.get("last_name")
         
         try:
             user= User.objects.get(id=id)
@@ -168,7 +172,38 @@ class UsersView(APIView):
                 status=status.HTTP_404_NOT_FOUND
             )
             
-        user.is_active= active
+        user.username=username
+        user.phone=phone
+        user.email=email
+        user.first_name=first_name
+        user.last_name=last_name
+        user.save()
+        
+        return Response(
+            {"success":"User is Edited"},
+            status=status.HTTP_200_OK
+        )
+        
+class UsersToggleView(APIView):
+    
+    permission_classes = [IsAdminUser]
+        
+    def put(self,request,id):
+        
+        
+        try:
+            user= User.objects.get(id=id)
+            
+        except User.DoesNotExist:
+            return Response(
+                {"error":"The User not Found"},
+                status=status.HTTP_404_NOT_FOUND
+            )
+            
+        if user.is_active ==True:
+            user.is_active=False
+        else :
+            user.is_active=True 
         user.save()
         
         return Response(
@@ -177,3 +212,28 @@ class UsersView(APIView):
         )
             
     
+class UsersSuperuserSet (APIView):
+    permission_classes = [IsAdminUser]
+    
+    def put(self, request,id):
+        
+        try:
+            user= User.objects.get(id=id)
+        except User.DoesNotExist:
+            return Response(
+                {"error":"User Does not Exist"},
+                status= status.HTTP_404_NOT_FOUND
+            )
+        
+        if user.is_superuser == True:
+            user.is_superuser = False
+        else:
+            user.is_superuser = True
+        
+        user.save()
+        
+        return Response(
+            {"error":"The User role updated"},
+            status=status.HTTP_200_OK
+        )
+            
