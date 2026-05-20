@@ -149,6 +149,11 @@ const Dashboard = () => {
                     className="flex items-center gap-2 bg-blue-900 hover:bg-blue-950 text-white text-sm font-medium px-5 py-3 rounded-xl border border-blue-700 hover:border-blue-600 transition-all shadow-lg shadow-blue-900/30">
                     📝 Transfer Money
                 </button>
+
+                <button onClick={() => navigate("/loans")}
+                    className="flex items-center gap-2 bg-purple-900 hover:bg-purple-950 text-white text-sm font-medium px-5 py-3 rounded-xl border border-purple-700 hover:border-purple-600 transition-all shadow-lg shadow-purple-900/30">
+                    ♾️ Request Loans
+                </button>
             </div>
 
             {/* Transfer Modal */}

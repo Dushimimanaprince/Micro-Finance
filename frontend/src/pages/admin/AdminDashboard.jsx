@@ -43,7 +43,7 @@ const AdminDashboard = () => {
                 const[adminData,userData,transactionData,bankData]= await Promise.all([
                     API.get(`auth/me`),
                     API.get(`users/`),
-                    API.get(`transactions/history/`),
+                    API.get(`transactions/all/`),
                     API.get(`wallets/`),
                 ])
                 setAdmin(adminData.data)
@@ -107,7 +107,7 @@ const AdminDashboard = () => {
     
     const statCards = [
         {label:"Total Users", value:stats.users, icon:"👥", color:" border-teal-800 bg-teal-900/20"},
-        {label:"Transaction Done", value:stats.users, icon:"📶", color:" border-blue-800 bg-blue-900/40"},
+        {label:"Transaction Done", value:stats.transactions, icon:"📶", color:" border-blue-800 bg-blue-900/40"},
         {label:"Bank Net Profit", value:`$ ${stats.bank_balance}`, icon:"💸", color:" border-green-900 bg-green-950/40"},
     ]
 
@@ -181,7 +181,7 @@ const AdminDashboard = () => {
                     ➕ Deposit To User
                 </button>
 
-                <button onClick={() => navigate("admin/loans")}
+                <button onClick={() => navigate("/admin/loans")}
                     className="flex items-center gap-2 bg-purple-900 hover:bg-purple-950 text-white text-sm font-medium px-5 py-3 rounded-xl border border-purple-700 hover:border-purple-600 transition-all shadow-lg shadow-blue-900/30">
                     🔌 Request Loans
                 </button>

@@ -1,10 +1,12 @@
 import { BrowserRouter, Route, Routes, Navigate} from "react-router-dom";
 import Signup from "./pages/auth/Signup";
-import OTP from "./pages/auth/Otp";
+import OTP from "./pages/auth/OTP";
 import Login from "./pages/auth/Login";
 import Dashboard from "./pages/user/Dashboard";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import Users from "./pages/admin/Users";
+import Loans from "./pages/user/Loans";
+import AdminLoans from "./pages/admin/AdminLoans";
 
 
 function App(){
@@ -19,6 +21,8 @@ function App(){
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/admin/dashboard" element={<AdminDashboard />} />
                 <Route path="/admin/users" element={<Users />} />
+                <Route path="/loans" element={<Loans />} />
+                <Route path="/admin/loans" element={<AdminLoans />} />
             </Routes>
 
         </BrowserRouter>
