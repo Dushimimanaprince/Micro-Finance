@@ -17,11 +17,22 @@ class LoanWalletSerializer(serializers.ModelSerializer):
         
 class LoanRequestSerializer(serializers.ModelSerializer):
     username = serializers.CharField(source='user.username', read_only=True)
+    first_name = serializers.CharField(source='user.first_name', read_only=True)
+    last_name = serializers.CharField(source='user.last_name', read_only=True)
+    email = serializers.CharField(source='user.email', read_only=True)
+    phone = serializers.CharField(source='user.phone', read_only=True)
+    loan_balance = serializers.SerializerMethodField()
 
     class Meta:
         model = LoanRequest
-        fields = ('id', 'user', 'username', 'amount', 'reason', 'interest_rate', 'status', 'requested_at', 'reviewed_at')
+        fields = ('id', 'user','username', 'first_name', 'last_name','loan_balance' ,'email', 'phone', 'amount', 'reason', 'interest_rate', 'status', 'requested_at', 'reviewed_at')
         read_only_fields = ('id', 'user', 'interest_rate', 'status', 'requested_at', 'reviewed_at')
+
+    def get_loan_balance(self, obj):
+        try:
+            return obj.user.loan_wallet.loan_balance
+        except:
+            return None
 
 
 class LoanRepaymentSerializer(serializers.ModelSerializer):

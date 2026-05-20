@@ -8,7 +8,7 @@ class TransactionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Transaction
-        fields = ('id', 'sender', 'sender_username', 'receiver', 'receiver_username', 'amount', 'transaction_at')
+        fields = ('id', 'sender', 'sender_username', 'receiver', 'receiver_username', 'purpose','amount', 'transaction_at')
         read_only_fields = ('id', 'sender', 'transaction_at')
 
 
@@ -19,6 +19,6 @@ class RequestSerializer(serializers.ModelSerializer):
     class Meta:
         model = Request
         fields = ('id', 'requester', 'requester_username', 'payer', 'payer_username', 'amount', 'purpose', 'status', 'request_at')
-        read_only_fields = ('id', 'requester', 'status', 'request_at')
+        read_only_fields = ('id', 'requester', 'payer','status', 'request_at')
         
 

@@ -96,7 +96,13 @@ class TransactionHistoryView(APIView):
         all_transactions = sent | received
         serializer = TransactionSerializer(all_transactions, many=True)
         return Response(serializer.data)
-    
+
+class TotalTransactionHistoryView(APIView):
+
+    def get(self, request):
+        all= Transaction.objects.all()
+        serializer = TransactionSerializer(all, many=True)
+        return Response(serializer.data)    
 
 class RequestView(APIView):
 
@@ -128,13 +134,21 @@ class RequestView(APIView):
         )
 
         return Response(
-            {"message": f"Payment request sent to {payer_username}"},
+            {"message": f"Payment {amount} request sent to {payer_username} wait to be Approved"},
             status=status.HTTP_201_CREATED
         )
 
     def get(self, request):
         requests = Request.objects.filter(payer=request.user)
         serializer = RequestSerializer(requests, many=True)
+        return Response(serializer.data)
+    
+class RequestViewer(APIView):
+
+    def get(self,request):
+
+        requests= Request.objects.filter(requester=request.user)
+        serializer= RequestSerializer(requests,many=True)
         return Response(serializer.data)
 
 
@@ -204,6 +218,24 @@ class ApproveRequestView(APIView):
 
         return Response(
             {"message": "Payment approved successfully"},
+            status=status.HTTP_200_OK
+        )
+    
+    def delete(self,request,id):
+
+        try:
+            request_payment=Request.objects.get(id=id)
+        except Request.DoesNotExist:
+            return Response(
+                {"error":"Request Not Found"},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        
+        request_payment.status = "declined"
+        request_payment.save()
+
+        return Response(
+            {"error":"Payment Rejected Successfully"},
             status=status.HTTP_200_OK
         )
         

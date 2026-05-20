@@ -7,5 +7,6 @@ urlpatterns = [
     path('loan/request/', LoanRequestView.as_view(), name='loan_request'),
     path('loan/repay/', LoanRepaymentView.as_view(), name='loan_repay'),
     path('loan/approve/<uuid:id>/', ApproveLoanView.as_view(), name='approve_loan'),
+    path('loan/reject/<uuid:id>/', ApproveLoanView.as_view(), name='reject_loan'),
     path('loan/approve/', ApproveLoanView.as_view(), name='approve_loan'),
 ]

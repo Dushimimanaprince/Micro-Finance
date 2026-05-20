@@ -121,8 +121,9 @@ class ApproveLoanView(APIView):
         loan_request.save()
         
         Transaction.objects.create(
-            sender= None,
+            sender=request.user,
             receiver= loan_request.user,
+            amount=amount,
             purpose= f"Loan Request of {amount}"
         )
 
