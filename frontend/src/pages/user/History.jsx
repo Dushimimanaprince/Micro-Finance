@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import API from "../../api/axios";
 
 
-const Transactions = () =>{
+const History = () =>{
 
     const [transactions,setTransactions]= useState([])
     const [error,setError]= useState("")
@@ -17,7 +17,7 @@ const Transactions = () =>{
         const fetchTransactions = async () =>{
 
             try{
-                const response = await API.get('transactions/all/')
+                const response = await API.get('transactions/history/')
                 setTransactions(response.data)
             } catch (err) {
                 setError("Failed to load Transaactions")
@@ -45,7 +45,7 @@ const Transactions = () =>{
     return (
         <div className="min-h-screen bg-zinc-950 text-zinc-100">
             <nav className="border-b border-zinc-800 px-6 py-4 flex items-center gap-3">
-                <button onClick={() => navigate("/admin/dashboard")}
+                <button onClick={() => navigate("/dashboard")}
                     className="w-8 h-8 rounded-lg bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 flex items-center justify-center transition-colors">
                     <svg className="w-4 h-4 text-zinc-400" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
@@ -63,8 +63,8 @@ const Transactions = () =>{
                             <tr className="border-b border-zinc-800 text-zinc-400 text-xs uppercase tracking-wider">
                                 <th className="text-left px-6 py-4">Transaction ID</th>
                                 <th className="text-left px-6 py-4">Amount</th>
-                                <th className="text-left px-6 py-4">Sender</th>
-                                <th className="text-left px-6 py-4">Receiver</th>
+                                <th className="text-left px-6 py-4">Status</th>
+                                <th className="text-left px-6 py-4">Reason</th>
                                 <th className="text-left px-6 py-4">Transaction At</th>
 
                             </tr>
@@ -77,8 +77,8 @@ const Transactions = () =>{
                                                                                         minimumFractionDigits: 2,
                                                                                         maximumFractionDigits: 2
                                     })}</td>
-                                    <td className="px-6 py-4 text-yellow-400">{trans.sender_username}</td>
-                                    <td className="px-6 py-4 text-blue-400">{trans.receiver_username}</td>
+                                    <td className="px-6 py-4 text-blue-400">{trans.sender_username}</td>
+                                    <td className="px-6 py-4 text-blue-400">{trans.purpose}</td>
                                     <td className="px-6 py-4 text-zinc-500 text-xs">
                                         {new Date(trans.transaction_at).toLocaleDateString()}
                                     </td>
@@ -92,4 +92,4 @@ const Transactions = () =>{
 
 }
 
-export default Transactions
+export default History

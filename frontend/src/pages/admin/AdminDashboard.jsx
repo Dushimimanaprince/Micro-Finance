@@ -186,15 +186,11 @@ const AdminDashboard = () => {
                     🔌 Request Loans
                 </button>
 
-                <button onClick={() => navigate("admin/loans")}
+                <button onClick={() => navigate("/admin/transactions")}
                     className="flex items-center gap-2 bg-teal-900 hover:bg-teal-950 text-white text-sm font-medium px-5 py-3 rounded-xl border border-teal-700 hover:border-teal-600 transition-all shadow-lg shadow-blue-900/30">
                     🔃 Transaction History
                 </button>
 
-                <button onClick={() => navigate("admin/loans")}
-                    className="flex items-center gap-2 bg-red-900 hover:bg-red-950 text-white text-sm font-medium px-5 py-3 rounded-xl border border-red-700 hover:border-red-600 transition-all shadow-lg shadow-blue-900/30">
-                    🚨 Activate User
-                </button>
             </div>
 
             {showDeposit && (

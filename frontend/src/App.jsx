@@ -7,6 +7,8 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 import Users from "./pages/admin/Users";
 import Loans from "./pages/user/Loans";
 import AdminLoans from "./pages/admin/AdminLoans";
+import Transactions from "./pages/admin/Transactions";
+import History from "./pages/user/History";
 
 
 function App(){
@@ -23,6 +25,8 @@ function App(){
                 <Route path="/admin/users" element={<Users />} />
                 <Route path="/loans" element={<Loans />} />
                 <Route path="/admin/loans" element={<AdminLoans />} />
+                <Route path="/admin/transactions" element={<Transactions />} />
+                <Route path="/user/transactions" element={<History />} />
             </Routes>
 
         </BrowserRouter>

@@ -154,6 +154,16 @@ const Dashboard = () => {
                     className="flex items-center gap-2 bg-purple-900 hover:bg-purple-950 text-white text-sm font-medium px-5 py-3 rounded-xl border border-purple-700 hover:border-purple-600 transition-all shadow-lg shadow-purple-900/30">
                     ♾️ Request Loans
                 </button>
+
+                <button onClick={() => navigate("/user/transactions")}
+                    className="flex items-center gap-2 bg-green-900 hover:bg-green-950 text-white text-sm font-medium px-5 py-3 rounded-xl border border-green-700 hover:border-green-600 transition-all shadow-lg shadow-green-900/30">
+                    🔃 All Transactions
+                </button>
+
+                <button onClick={() => navigate("#")}
+                    className="flex items-center gap-2 bg-teal-900 hover:bg-teal-950 text-white text-sm font-medium px-5 py-3 rounded-xl border border-teal-700 hover:border-teal-600 transition-all shadow-lg shadow-blue-900/30">
+                    🔌 Requests
+                </button>
             </div>
 
             {/* Transfer Modal */}
