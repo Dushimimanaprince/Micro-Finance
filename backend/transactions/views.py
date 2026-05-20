@@ -11,6 +11,8 @@ from .serializer import TransactionSerializer,RequestSerializer
 from decimal import Decimal
 from transactions.serializer import RequestSerializer
 from transactions.models import Request
+import functools
+from django.conf import settings
 
 User= get_user_model()
 
@@ -289,3 +291,96 @@ class DepositView(APIView):
         )
         
         
+def require_api_key(func):
+
+    @functools.wraps(func)
+    def wrapper(self,request,*args,**kwargs):
+
+        key= request.headers.get("X-Api_Key")
+
+        if not key or key != settings.STUDENT_APP_API_KEY:
+            return Response(
+                {"error":"UnAuthorize"},
+                status=status.HTTP_401_UNAUTHORIZED
+            )
+        return func(self,request,*args,**kwargs)
+    return wrapper
+
+
+class ValidateUserView(APIView):
+    authentication_classes= []
+    permission_classes = []
+
+    @require_api_key
+    def get(self,request):
+
+        name= request.query_params.get("username")
+
+        if not name:
+            return Response(
+                {"error":"Please provide the Username"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        try:
+            user_profile = User.objects.get(username=name)
+        except User.DoesNotExist:
+            return Response(
+                {"error":"The User is not Found"},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        
+        return Response(
+            {   "exists":True,
+                "username":user_profile.username,
+                "message":f"The user {user_profile.username} Exists",
+             }
+        )
+    
+class CreateFeeRequestView(APIView):
+
+    authentication_classes= []
+    permission_classes= []
+
+    @require_api_key
+    def post(self,request):
+
+        username= request.data.get("username")
+        amount= request.data.get("amount")
+        student_name= request.data.get("student_name","")
+
+        if not username or not amount:
+            return Response (
+                {"error":"Please Provide username or Amount"}
+            )
+        
+        try:
+            payer= User.objects.get(username=username)
+        except User.DoesNotExist:
+            return Response(
+                {"error":"The user is not Found"},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        try:
+            requester= User.objects.get(username=settings.UNIVERSITY_MICROFINANCE_USERNAME)
+        except User.DoesNotExist:
+            return Response(
+                {"error":"The University Account not Found"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+        
+        fee_request= Request.objects.create(
+            requester=requester,
+            payer=payer,
+            amount= Decimal(str(amount)),
+            purpose=f"University payment for Student: {student_name}",
+            status="pending"
+        )
+
+        return Response({
+            "request_id": str(fee_request.id),
+            "status": fee_request.status,
+            "amount": str(fee_request.amount),
+            "payer": payer.username,
+            "message": "Fee request created. Please approve it in the Microfinance app."
+        }, status=status.HTTP_201_CREATED)

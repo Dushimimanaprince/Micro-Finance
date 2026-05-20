@@ -55,6 +55,7 @@ TEMPLATES = [
     },
 ]
 
+
 WSGI_APPLICATION = 'backend.wsgi.application'
 
 DATABASES = {
@@ -101,7 +102,8 @@ SIMPLE_JWT = {
 
 CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS', 'http://localhost:5173').split(',')
 
-
+STUDENT_APP_API_KEY = os.environ.get("STUDENT_APP_API_KEY")
+UNIVERSITY_MICROFINANCE_USERNAME = os.environ.get("University_name")
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
