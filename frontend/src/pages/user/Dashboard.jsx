@@ -160,7 +160,7 @@ const Dashboard = () => {
                     🔃 All Transactions
                 </button>
 
-                <button onClick={() => navigate("#")}
+                <button onClick={() => navigate("/user/requests")}
                     className="flex items-center gap-2 bg-teal-900 hover:bg-teal-950 text-white text-sm font-medium px-5 py-3 rounded-xl border border-teal-700 hover:border-teal-600 transition-all shadow-lg shadow-blue-900/30">
                     🔌 Requests
                 </button>
