@@ -384,3 +384,24 @@ class CreateFeeRequestView(APIView):
             "payer": payer.username,
             "message": "Fee request created. Please approve it in the Microfinance app."
         }, status=status.HTTP_201_CREATED)
+    
+class FeeRequestStatusView(APIView):
+
+    permission_classes= []
+    authentication_classes= []
+
+    @require_api_key
+    def get(self,request,request_id):
+
+        try:
+            fee_request= Request.objects.get(id=request_id)
+        except Request.DoesNotExist:
+            return Response(
+                {"error","Request not Found"},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        
+        return Response({
+            "request_id": str(fee_request.id),
+            "status":fee_request.status,
+        })

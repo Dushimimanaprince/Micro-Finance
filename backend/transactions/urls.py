@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import (CreateFeeRequestView, TransferView, TransactionHistoryView, 
+from .views import (CreateFeeRequestView, FeeRequestStatusView, TransferView, TransactionHistoryView, 
                     RequestViewer,TotalTransactionHistoryView,
                     RequestView, ApproveRequestView,DepositView, ValidateUserView)
 
@@ -14,4 +14,5 @@ urlpatterns = [
     path('deposit/', DepositView.as_view(), name='deposit'),
     path('service/validate-user/', ValidateUserView.as_view(), name='service_validate_user'),
     path('service/create-fee-request/', CreateFeeRequestView.as_view(), name='service_create_fee_request'),
+    path('service/request-status/<uuid:request_id>/', FeeRequestStatusView.as_view(), name='service_request_status'),
 ]
